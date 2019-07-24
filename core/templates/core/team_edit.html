@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard - Task Manager{% endblock %}
+
+{% block content %}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
+
+      <h2>Create New Team</h2>
+      <div class="table-responsive">
+        <form class="mt-3" method="POST">
+          {% csrf_token %}
+          {% if error %}
+              <div class="alert alert-danger">
+                {{ error }}
+              </div>
+          {% endif %}
+
+          <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Team Name</label>
+            <input type="text" name="{{ form.name.html_name }}" value="{{ form.name.value|default_if_none:''}}" class="form-control" id="{{ form.name.id_for_label }}" placeholder="" required>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.users.id_for_label }}">Select Users</label>
+            <select multiple name="{{ form.users.html_name }}" class="form-control" id="{{ form.users.id_for_label }}" required>
+
+              {% for choice in form.users %}
+                {% if user.username != choice.choice_label %}
+                    {{ choice }}
+                {% endif %}
+              {% endfor %}
+
+            </select>
+          </div>
+            {% if is_update == True %}
+            <button type="submit" class="btn btn-primary mb-3">Update</button>
+            <a href="{% url 'delete_team' team_id=form.instance.id%}" role="button" class="btn btn-danger mb-3 mr-4 float-right">Delete Team</a>
+            {% else %}
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+            {% endif %}
+            </form>
+      </div>
+    </main>
+{% endblock %}

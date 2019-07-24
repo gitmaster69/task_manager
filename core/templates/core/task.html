@@ -1,0 +1,104 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard - Task Manager{% endblock %}
+
+{% block content %}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Task: {{task_data.0.name}}</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a href="{{ request.path }}/edit" role="button" class="btn btn-sm btn-outline-secondary">Edit/Delete Task</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+
+            <h2>Description</h2>
+            <div class="table-responsive">
+                <p>{{task_data.0.desc}}</p>
+            </div>
+
+        </div>
+
+        <div class="col border-left">
+
+            <h2>Created By</h2>
+            <div class="table-responsive">
+                <ul class="list-group">
+                    <li class="list-group-item">{{task_data.0.owner__first_name}} {{task_data.0.owner__last_name}}</li>
+                </ul>
+            </div>
+
+            <hr>
+
+            <h2>Assignee</h2>
+            <div class="table-responsive">
+                <ul class="list-group">
+                    {% for names in task_data %}
+                    <li class="list-group-item">{{names.assignee__first_name}} {{names.assignee__last_name}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col">
+                    <h2>Status</h2>
+                    <div class="table-responsive">
+                        <p>{{task_data.0.status}}</p>
+                    </div>
+                </div>
+
+                <div class="col border-left">
+                    <h2>Team</h2>
+                    <div class="table-responsive">
+                        <p>{{task_data.0.team__name}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <h2 id="comments">Comments</h2>
+
+    <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form method="POST" action="{{ request.path }}/comment">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea name="{{form.comment.name}}" class="form-control" rows="3"
+                              maxlength="{{form.fields.comment.max_length}}" required></textarea>
+                </div>
+                {{ form.errors }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    {% for comment in comments %}
+
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle"
+             src="http://placehold.it/50x50?text={{comment.author__first_name|make_list|first}}" width="50" height="50"
+             alt="">
+        <div class="media-body">
+            <h5 class="mt-0 d-inline">{{comment.author__first_name}} {{comment.author__last_name}} - </h5><span
+                class="badge badge-secondary">{{comment.last_modified}}</span>
+            {{comment.comment|linebreaks}}
+        </div>
+    </div>
+
+    {% endfor %}
+
+</main>
+{% endblock %}

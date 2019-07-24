@@ -1,0 +1,13 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+
+  <main role="main" class="inner cover">
+    <h1 class="cover-heading">Welcome To The Task Manager</h1>
+    <p class="lead">This is the screening task for <strong>Python Fossee Summer Fellowship 2019</strong>. It's a Task Manager App built with <strong>Django</strong>.</p>
+    <p class="lead">
+      <a href="{% url 'login' %}" class="btn btn-lg btn-secondary mr-3">Login</a>
+      <a href="{% url 'signup' %}" class="btn btn-lg btn-secondary">Sign Up</a>
+    </p>
+  </main>
+{% endblock %}

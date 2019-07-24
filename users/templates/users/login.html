@@ -1,0 +1,46 @@
+{% extends "users/base.html" %}
+
+{% block title %}Login - Task Manager{% endblock %}
+
+{% block content %}
+
+<form class="form-signin" method="post">
+    {% load static %}
+  <div class="text-center mb-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    <img class="mb-4" src="{% static 'logo.png' %}" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+    <p>Login into your existing account.</p>
+    <p class="mt-4 mb-3"><b>Sample Users:</b><br> Username: aaronvarghese  |  Password: ASDFqwer1<br> Username: pratiksharma  |  Password: ASDFqwer1</p>
+
+  </div>
+
+  {% csrf_token %}
+
+  {% for field in form %}
+    <div class="form-label-group">
+      <input class="form-control" type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" value="{{ field.value|default_if_none:''}}" placeholder="{{ field.label }}" required autofocus>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field.errors }}
+    </div>
+  {% endfor %}
+
+  {{ form.errors }}
+
+  <!--<div class="form-label-group">-->
+    <!--<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>-->
+    <!--<label for="inputPassword">Password</label>-->
+  <!--</div>-->
+
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <p class="mt-3">New user? Create a <a href="{% url 'signup' %}">new account</a></p>
+  <p class="mt-4 mb-3 text-muted text-center">Built by Aaron Varghese</p>
+</form>
+{% endblock %}

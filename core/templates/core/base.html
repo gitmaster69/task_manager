@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .clickable-tr {
+            cursor: pointer;
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    {% load static %}
+    <link href="{% static 'core/dashboard.css' %}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Task Manager</a>
+
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger mb-1">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="btn-group px-4">
+        <button type="button" style="padding: 0px 25px;" class="btn btn-outline-info" data-toggle="dropdown">
+            {{request.user.username}}
+        </button>
+        <button type="button" class="btn btn-outline-info dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown"></button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+            <a class="dropdown-item" href="{% url 'create_team' %}">Create Team</a>
+            <a class="dropdown-item" href="{% url 'create_task' %}">Create Task</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'dashboard' %}">
+                            <span data-feather="home"></span>
+                            Dashboard <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file"></span>
+                            Teams
+                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="users"></span>
+                            Profile
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Teams</span>
+                    <a class="d-flex align-items-center text-muted" href="{% url 'create_team' %}">
+                        <span data-feather="plus-circle">TODO</span>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    {% for team in sidebar_teams %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/team-{{team.id}}">
+                            <span data-feather="file-text"></span>
+                            {{team.name}}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+
+<script>
+    $('.clickable-tr').on('click', function () {
+        let myLink = $(this).attr('href');
+        window.location.href = myLink;
+    });
+</script>
+</body>
+</html>
